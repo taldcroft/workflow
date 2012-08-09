@@ -65,11 +65,11 @@ Cloning an existing project
 
     git clone git@github.com:taldcroft/example.git
 
-Development for a simple (not released) project
+Development for a simple project with no review
 ---------------------------------------------------
 
-If it's really just one person doing a project and it is not yet
-released or configured, it might be OK to work on the `master` branch.
+If it's really just one person doing a project and changes do not require review, 
+it might be OK to work on the `master` branch.
 This single thread development is not good once a project gets
 more complex.
 
@@ -84,14 +84,30 @@ Write a [good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-co
 
 Periodically update github:
 
-    git push origin  # master is implicit
+    git push origin master
+    
+Here `origin` is the name of the remote and `master` is the name of the local branch you are pushing.
 
 Likewise to pull in any changes on github to your current master:
 
-    git pull origin
+    git pull origin master
+    
+Here `master` is the name of the remote branch that you are pulling into the *current* branch.  If you 
+are not on the local `master` branch you might be surprised.
 
-Development for a mature / complex project
---------------------------------------------
+Development for a project with review required
+------------------------------------------------
+
+Any configured project (particularly anything related to flight ops) should
+have secondary review of changes.  Using github pull requests makes this 
+process easy and produces a permanent legacy of the review.
+
+Eng archive example: https://github.com/sot/eng_archive
+
+The fundamental difference in this process is consistent use of branches
+to isolate development of a new "feature set".  The goal is to make
+each feature branch contain a specific and independent improvement.
+That isn't always precisely possible, but most of the time it is.
 
 Starcheck example: https://github.com/sot/starcheck.
 
@@ -99,6 +115,7 @@ Go through the Pro Git chapter on
 [branching](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)
 
     cd ~/git/project
+    git checkout master  # make sure you start from master
     git branch new-feature  # make new branch
     git checkout new-feature  # checkout new branch
     touch newfile.py
@@ -118,7 +135,7 @@ Go through the Pro Git chapter on
 Now send this up to github as a new branch:
 
     git branch  # make sure you are on the correct branch
-    git push origin new-feature  # push current branch
+    git push origin new-feature  # push current branch to origin
 
 You can delete a branch:
 
@@ -142,3 +159,12 @@ Last resync your local repo with github and tag the release:
     git merge origin/master
     git tag -a "0.2" -m "Version 0.2"
     git push origin --tags
+
+Tips / tricks
+--------------
+
+- Read up on .gitignore to learn how to have `git status` ignore certain files that are not versioned.
+- Every time you change directory to a git repo after a break, do `git status` to 
+  see where things stand.  This says what branch you are on and what files are modified.
+- Examine `/home/aldcroft/.gitconfig` for some useful shortcuts.
+-
