@@ -1,6 +1,11 @@
 Git / github workflow
 =====================
 
+Good refs:
+
+- [Pro git](http://git-scm.com/book)
+- http://gitref.org/index.html
+
 There is [Help](https://help.github.com/) available.
 
 - Setting up an account
@@ -58,7 +63,7 @@ branch `master`.
 Cloning an existing project
 ---------------------------
 
-git clone git@github.com:taldcroft/example.git
+    git clone git@github.com:taldcroft/example.git
 
 Development for a simple (not released) project
 ---------------------------------------------------
@@ -68,10 +73,12 @@ released or configured, it might be OK to work on the `master` branch.
 This single thread development is not good once a project gets
 more complex.
 
-     <edit>
-     <test etc>
-     git commit -a  # brings up editor
-     git log
+    <edit>
+    <test etc>
+    git status
+    git diff
+    git commit -a  # brings up editor
+    git log
 
 Write a [good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)!
 
@@ -95,11 +102,16 @@ Go through the Pro Git chapter on
     git branch new-feature  # make new branch
     git checkout new-feature  # checkout new branch
     touch newfile.py
+    git status
     git add newfile.py
+    git status
+    git diff
     git commit -m "Add newfile.py"
     git checkout master
     git checkout new-branch
     emacs VERSION
+    git status
+    git diff
     git commit -am "Update version to 0.2"
     gitk --all
 
