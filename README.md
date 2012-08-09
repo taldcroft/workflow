@@ -54,6 +54,12 @@ business is only needed when creating a new repo from scratch.  If you had
 cloned with `git clone git@github.com/taldcroft/project.git` then that wouldn't
 be needed.
 
+In the case that your local repo was already cloned from somewhere else
+(perhaps a local disk repo) and you now want to push to github, you need
+ to change the URL associated with the `origin` remote:
+ 
+     git remote set-url origin git@github.com:taldcroft/project.git
+
 This introduces two very important concepts, the remote `origin` and the
 branch `master`.
 
