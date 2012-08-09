@@ -154,11 +154,36 @@ branch (`master`).
 
 Last resync your local repo with github and tag the release:
 
-    git fetch origin
+    git fetch origin  # fetch all changes since no branch name provided
     git checkout master
     git merge origin/master
     git tag -a "0.2" -m "Version 0.2"
     git push origin --tags
+
+### Fetch vs. Pull
+
+This is a little confusing at first.
+
+**fetch**: fetches all the changes (updates to existing branches or new branches) from the remote but
+  *does not touch your local repo*!  This is a good thing because it avoids surprises.
+
+**pull**: fetches the changes (exactly as for fetch) and then automatically merges changes
+  into your current branch.
+  
+Best practice is to use `fetch` and then see what came down, then examine what was fetched, and
+then merge.
+Otherwise it's possible to make mistakes.  The remote branches are fetched into branches named 
+`origin/<remote-branch>`.  You cannot directly checkout or inspect these remote branches.  (Note
+that `origin` is the most common remote name, but this is arbitrary and could be anything you want).
+
+To merge changes into your current branch:
+
+    git merge origin/<remote-branch>
+
+If you fetch and there is a new branch that you want to work on, do:
+
+    git branch new-branch origin/new-branch
+    git checkout new-branch
 
 Tips / tricks
 --------------
@@ -167,4 +192,13 @@ Tips / tricks
 - Every time you change directory to a git repo after a break, do `git status` to 
   see where things stand.  This says what branch you are on and what files are modified.
 - Examine `/home/aldcroft/.gitconfig` for some useful shortcuts.
--
+
+### Try things out on the side first
+
+If you are worried about doing a merge or aren't sure what will happen if you do some operation,
+try it on a test copy of a branch first.
+
+    git checkout master
+    git branch master-test  # Make a new branch master-test that is the same as master
+    git checkout master-test
+    # Now try whatever merge or other operation.  Master is safe!
