@@ -185,6 +185,29 @@ If you fetch and there is a new branch that you want to work on, do:
     git branch new-branch origin/new-branch
     git checkout new-branch
 
+Big picture: what is master
+----------------------------
+
+The workflow described here may be slightly different than you are used to in one important regard.
+In this case the `master` repository generally contains the most recent *development* version 
+of the code which has been tested and is acceptable for release, but is not necessarily installed yet.
+
+So feature branches get merged to master after test and review, but that is independent of 
+release and installation.  The tracking of *released* code takes place via git tags.  In this
+workflow it is important to tag releases.  Then github automatically makes a link available to
+download a tarball of that release.
+
+This workflow is quite common in open source projects.
+
+There are many other workflows possible, and one is to explicitly have a `development` branch that
+holds the latest development version.  Then `master` is updated only when code is installed.  In
+that way `master` is always the installed release.  In this workflow tagging is not as essential but
+there is still the required step of pushing to master at the end.
+
+In practice for us the distinction is not so big because most of the time we install `master` fairly
+quickly after a feature branch gets merged because we want the new functionality out on the floor.
+So in this way life is simplified and we don't need to deal with an extra long lived branch.
+
 Tips / tricks
 --------------
 
