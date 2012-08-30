@@ -163,6 +163,8 @@ Last resync your local repo with github and tag the release:
     git fetch origin  # fetch all changes since no branch name provided
     git checkout master
     git merge origin/master
+    emacs VERSION  # or whatever
+    git commit -am "Update VERSION to 0.2"
     git tag -a "0.2" -m "Version 0.2"
     git push origin --tags
 
