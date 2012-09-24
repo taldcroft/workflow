@@ -96,10 +96,18 @@ Here `origin` is the name of the remote and `master` is the name of the local br
 
 Likewise to pull in any changes on github to your current master:
 
-    git pull origin master
+    git fetch origin
     
-Here `master` is the name of the remote branch that you are pulling into the *current* branch.  If you 
-are not on the local `master` branch you might be surprised.
+This will indicate if there is new content in any remote origin branch.  If there is you can either
+merge it into an existing branch or checkout as a new branch.  For instance:
+
+    git checkout master  # if you are not already on master
+    git merge origin/master
+    
+    # OR
+    
+    git checkout origin/new-feature  # if it doesn't already exist
+    
 
 Development for a project with review required
 ------------------------------------------------
