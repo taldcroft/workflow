@@ -6,10 +6,20 @@ Good refs:
 - [Pro git](http://git-scm.com/book)
 - http://gitref.org/index.html
 
-There is [Help](https://help.github.com/) available.
+There is [Help](https://help.github.com/) available.  In particular you should read through
+and follow the steps in these pages:
 
-- Setting up an account
-- Creating a new repository
+- [Join GitHub](https://github.com/join)
+- [Setting up git](https://help.github.com/articles/set-up-git#platform-linux)
+- [Creating an SSH key](https://help.github.com/articles/generating-ssh-keys#platform-linux)
+- [Creating a new repository](https://help.github.com/articles/create-a-repo)
+
+When you join GitHub and set up git it is important to use a consistent email address
+since this is the ultimately the way you are identified to Git / GitHub when making
+commits.
+
+The SSH key section will allow you to push to repositories without having to enter
+your password every time.
 
 Starting a new project
 ----------------------------
@@ -45,11 +55,11 @@ Do *not* have it automatically create a README file, this new
 github repo needs to be empty.
 
     git remote add origin git@github.com:taldcroft/project.git      # ssh
-    git remote add origin https://github.com/taldcroft/project.git  # https
     git push -u origin master
 
 Github now recommends the https protocol but it requires git 1.7.10 (OK for
-Ska, not OK for HEAD network).  Just use SSH.  The whole `git remote add ...`
+Ska, not OK for HEAD network).  Just use SSH as this works reliably on HEAD
+machines.  Note that the whole `git remote add ...`
 business is only needed when creating a new repo from scratch.  If you had
 cloned with `git clone git@github.com/taldcroft/project.git` then that wouldn't
 be needed.
@@ -57,7 +67,7 @@ be needed.
 In the case that your local repo was already cloned from somewhere else
 (perhaps a local disk repo) and you now want to push to github, you need
  to change the URL associated with the `origin` remote:
- 
+
      git remote set-url origin git@github.com:taldcroft/project.git
 
 This introduces two very important concepts, the remote `origin` and the
@@ -66,15 +76,31 @@ branch `master`.
     git remote -v
     git branch -a
 
-Cloning an existing project
----------------------------
+Cloning an existing project on GitHub
+-------------------------------------
 
+If you the project exists on GitHub but not locally, do the following:
+
+    cd ~/git
     git clone git@github.com:taldcroft/example.git
+    cd example
+
+Updating an existing project
+-----------------------------
+
+If the project exists both on GitHub and locally, but you haven't worked on
+it for a bit, you typically want to make sure that the master branch is
+synced with what is on GitHub:
+
+    cd ~/git/example
+    git checkout master
+    git fetch origin  # fetch any new commits / branches on github
+    git merge origin/master  # merge the github master into your local (on-disk) master
 
 Development for a simple project with no review
 ---------------------------------------------------
 
-If it's really just one person doing a project and changes do not require review, 
+If it's really just one person doing a project and changes do not require review,
 it might be OK to work on the `master` branch.
 This single thread development is not good once a project gets
 more complex.
@@ -91,29 +117,29 @@ Write a [good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-co
 Periodically update github:
 
     git push origin master
-    
+
 Here `origin` is the name of the remote and `master` is the name of the local branch you are pushing.
 
 Likewise to pull in any changes on github to your current master:
 
     git fetch origin
-    
+
 This will indicate if there is new content in any remote origin branch.  If there is you can either
 merge it into an existing branch or checkout as a new branch.  For instance:
 
     git checkout master  # if you are not already on master
     git merge origin/master
-    
+
     # OR
-    
+
     git checkout origin/new-feature  # if it doesn't already exist
-    
+
 
 Development for a project with review required
 ------------------------------------------------
 
 Any configured project (particularly anything related to flight ops) should
-have secondary review of changes.  Using github pull requests makes this 
+have secondary review of changes.  Using github pull requests makes this
 process easy and produces a permanent legacy of the review.
 
 Eng archive example: https://github.com/sot/eng_archive
@@ -128,18 +154,31 @@ Starcheck example: https://github.com/sot/starcheck.
 Go through the Pro Git chapter on
 [branching](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)
 
+The following example assumes that `project` already exists as a git repository,
+both locally and on GitHub.  It also assumes that you have synced the local
+repo to GitHub as shown previously:
+
     cd ~/git/project
     git checkout master  # make sure you start from master
-    git branch new-feature  # make new branch
-    git checkout new-feature  # checkout new branch
+    git checkout -b new-feature  # create and checkout new branch
+
+At this point you should see a mesage saying that you are on branch `new-feature`.
+Now you can start doing your edits and commits:
+
     touch newfile.py
     git status
     git add newfile.py
     git status
     git diff
     git commit -m "Add newfile.py"
+
+You can always go back to the `master` branch and then back to your new `new-branch`:
+
     git checkout master
     git checkout new-branch
+
+Make some more edits and finally use `gitk` to get a graphical view of what's happening:
+
     emacs VERSION
     git status
     git diff
@@ -185,10 +224,10 @@ This is a little confusing at first.
 
 **pull**: fetches the changes (exactly as for fetch) and then automatically merges changes
   into your current branch.
-  
+
 Best practice is to use `fetch` and then see what came down, then examine what was fetched, and
 then merge.
-Otherwise it's possible to make mistakes.  The remote branches are fetched into branches named 
+Otherwise it's possible to make mistakes.  The remote branches are fetched into branches named
 `origin/<remote-branch>`.  You cannot directly checkout or inspect these remote branches.  (Note
 that `origin` is the most common remote name, but this is arbitrary and could be anything you want).
 
@@ -205,10 +244,10 @@ Big picture: what is master
 ----------------------------
 
 The workflow described here may be slightly different than you are used to in one important regard.
-In this case the `master` repository generally contains the most recent *development* version 
+In this case the `master` repository generally contains the most recent *development* version
 of the code which has been tested and is acceptable for release, but is not necessarily installed yet.
 
-So feature branches get merged to master after test and review, but that is independent of 
+So feature branches get merged to master after test and review, but that is independent of
 release and installation.  The tracking of *released* code takes place via git tags.  In this
 workflow it is important to tag releases.  Then github automatically makes a link available to
 download a tarball of that release.
@@ -228,7 +267,7 @@ Tips / tricks
 --------------
 
 - Read up on .gitignore to learn how to have `git status` ignore certain files that are not versioned.
-- Every time you change directory to a git repo after a break, do `git status` to 
+- Every time you change directory to a git repo after a break, do `git status` to
   see where things stand.  This says what branch you are on and what files are modified.
 - Examine `/home/aldcroft/.gitconfig` for some useful shortcuts.
 
