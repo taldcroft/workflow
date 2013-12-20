@@ -4,7 +4,7 @@ Git / github workflow
 Good refs:
 
 - [Pro git](http://git-scm.com/book)
-- http://gitref.org/index.html
+- [Visual guide to git](http://marklodato.github.io/visual-git-guide/index-en.html)
 
 There is [Help](https://help.github.com/) available.  In particular you should read through
 and follow the steps in these pages:
