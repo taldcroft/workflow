@@ -172,10 +172,10 @@ Now you can start doing your edits and commits:
     git diff
     git commit -m "Add newfile.py"
 
-You can always go back to the `master` branch and then back to your new `new-branch`:
+You can always go back to the `master` branch and then back to your new `new-feature`:
 
     git checkout master
-    git checkout new-branch
+    git checkout new-feature
 
 Make some more edits and finally use `gitk` to get a graphical view of what's happening:
 
@@ -190,6 +190,35 @@ Now send this up to github as a new branch:
     git branch  # make sure you are on the correct branch
     git push origin new-feature  # push current branch to origin
 
+**The all important Pull Request process**
+
+- *Go to github and issue a pull request.*
+- Send email to relevant parties requesting review
+- If you get some comments that need to be addressed, do the following
+  on your local `new-feature` branch:
+
+  - Edit files as needed
+  - `git status`
+  - `git diff`
+  - `git commit -am "Next commit message"`
+  - `git push origin new-feature`
+
+- When approval for the final pull request is obtained, then merge using the
+  GitHub green merge button.  *Do NOT merge locally on the command line!*
+
+- If needed make a version release tag on Github via the `Releases` button.
+  E.g. put in a Version of 0.2 and give a title of `Version 0.2`.  This
+  happens *after* merging the pull request, but note that any embedded
+  version info should be done *as part* of the pull request.
+
+**Resync your local repo**
+
+    git fetch origin  # fetch all changes since no branch name provided
+    git checkout master
+    git merge origin/master
+
+**More management**
+
 You can delete a branch:
 
     git checkout master
@@ -203,17 +232,6 @@ Now pull a new feature branch from github to your local repo:
 If you just do `git pull origin new-feature` it will merge into your current
 branch (`master`).
 
-*Now go to github and issue a pull request.*
-
-Last resync your local repo with github and tag the release:
-
-    git fetch origin  # fetch all changes since no branch name provided
-    git checkout master
-    git merge origin/master
-    emacs VERSION  # or whatever
-    git commit -am "Update VERSION to 0.2"
-    git tag -a "0.2" -m "Version 0.2"
-    git push origin --tags
 
 ### Fetch vs. Pull
 
